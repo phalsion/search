@@ -1,14 +1,12 @@
 <?php
 
-namespace Bundles\Employee\Search\Column;
-
-
-use Phalsion\Search\Columns\Column;
+namespace Phalsion\Search\Columns;
 
 /**
  * Class KeyWord
  *
- * @package \Bundles\Employee\Search\Column
+ * @author  saberuster
+ * @package Phalsion\Search\Columns
  */
 class KeyWord extends Column
 {
@@ -35,17 +33,17 @@ class KeyWord extends Column
 
         switch ( $this->like ) {
             case static::LEFT:
-                $likeValue = '%:' . $this->getField() . ':';
+                $likeValue = '%:' . $this->getDbField() . ':';
                 break;
             case static::RIGHT:
-                $likeValue = ':' . $this->getField() . ':%';
+                $likeValue = ':' . $this->getDbField() . ':%';
                 break;
             case static::BOTH:
-                $likeValue = '%:' . $this->getField() . ':%';
+                $likeValue = '%:' . $this->getDbField() . ':%';
                 break;
         }
 
-        return $this->getField() . ' like ' . $likeValue;
+        return $this->getDbField() . ' like ' . $likeValue;
     }
 
 

@@ -1,9 +1,7 @@
 <?php
 
-namespace Bundles\Employee\Search\Column;
+namespace Phalsion\Search\Columns;
 
-
-use Phalsion\Search\Columns\Column;
 
 /**
  * Class MultiSelect
@@ -16,7 +14,7 @@ class MultiSelect extends Column
 
     public function condition()
     {
-        return $this->getDbColumn() . ' IN ({' . $this->getField() . ':array})';
+        return $this->getDbField() . ' IN ({' . $this->getDbField() . ':array})';
     }
 
 

@@ -5,7 +5,7 @@ namespace Phalsion\Search\Columns;
 /**
  * Interface Column
  *
- * @author  liqi created_at 2017/7/29上午9:54
+ * @author  saberuster
  * @package Phalsion\Search\Columns
  */
 interface ColumnInterface
@@ -17,7 +17,7 @@ interface ColumnInterface
      *
      * @return void
      */
-    public function setParam($param);
+    public function setParam( $param );
 
     /**
      * 获取参数绑定的数据
@@ -39,4 +39,13 @@ interface ColumnInterface
      * @return bool
      */
     public function allowEmpty(): bool;
+
+    /**
+     *  设置字段
+     *
+     * @param $field
+     *
+     * @return mixed
+     */
+    public function setField( $field );
 }

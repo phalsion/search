@@ -1,8 +1,6 @@
 <?php
 
-namespace Bundles\Employee\Search\Column;
-
-use Phalsion\Search\Columns\Column;
+namespace Phalsion\Search\Columns;
 
 /**
  * Class Radio
@@ -15,6 +13,6 @@ class Radio extends Column
 
     public function condition()
     {
-        return $this->getDbColumn() . ' = :' . $this->getDbColumn() . ':';
+        return $this->getField() . ' = :' . $this->getField() . ':';
     }
 }

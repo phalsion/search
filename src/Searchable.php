@@ -5,7 +5,7 @@ namespace Phalsion\Search;
 /**
  * Interface Searchable
  *
- * @author  saberuster created_at 2017/7/29上午9:45
+ * @author  saberuster
  * @package Phalsion\Search
  */
 interface Searchable

@@ -17,7 +17,7 @@ abstract class Search implements Searchable
     /**
      * @var array $params 请求参数
      */
-    protected $params;
+    private $_params;
 
     /**
      * @var ColumnInterface[] $_searchers
@@ -36,9 +36,11 @@ abstract class Search implements Searchable
 
     public function __construct( array $params )
     {
-        $this->params = $params;
-        $this->_binds = [];
-        $this->conditions();
+        $this->setParams($params);
+        $this->_binds      = [];
+        $this->_conditions = [];
+        $this->initialize();
+        $this->afterInitialize();
     }
 
     abstract public function initialize();
@@ -51,6 +53,22 @@ abstract class Search implements Searchable
     public function addColumn( $field, ColumnInterface $column )
     {
         $this->_columns[ $field ] = $column;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->_params;
+    }
+
+    /**
+     * @param array $params
+     */
+    public function setParams( array $params )
+    {
+        $this->_params = $params;
     }
 
     /**
@@ -84,27 +102,33 @@ abstract class Search implements Searchable
     {
         foreach ( $this->_columns as $field => $column ) {
 
+            $column->setField($field);
+
             //设置对应字段的参数的值
             $column->setParam(
-                $this->params[ $field ] ?? null
+                $this->getParams()
             );
 
-            $condition = $column->getCondition();
+            $bind = $column->getBind();
+            //如果获取到的条件为空时
+            //判断该字段是否允许空值
+            //如果不允许空值，抛出异常
+            if ( empty($bind) ) {
+                if ( !$column->allowEmpty() ) {
+                    throw new SearchException();
+                }
 
-            if ( '' == $condition && !$column->allowEmpty() ) {
-                //如果获取到的条件为空时
-                //判断该字段是否允许空值
-                //如果不允许空值，抛出异常
-                throw new SearchException();
+                continue;
             }
+
+            $condition = $column->getCondition();
 
             //添加condition
             $this->addConditions($condition);
 
             //添加bind
-            $this->addBind(
-                $column->getBind()
-            );
+            $this->addBind($bind);
+
         }
     }
 }

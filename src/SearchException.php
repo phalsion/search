@@ -5,7 +5,7 @@ namespace Phalsion\Search;
 /**
  * Class SearchException
  *
- * @author  liqi created_at 2017/7/29上午10:33
+ * @author  saberuster
  * @package \Phalsion\Search
  */
 class SearchException extends \Exception

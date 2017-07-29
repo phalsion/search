@@ -1,33 +1,24 @@
 <?php
 
-namespace Bundles\Employee\Search\Column;
-
-
-use Phalcon\Config;
+namespace Phalsion\Search\Columns;
 
 /**
  * Class Section
  *
- * @package \Bundles\Employee\Search\Column
+ * @author  saberuster
+ * @package Bundles\Employee\Search\Column
  */
-class Section extends SearchColumn
+class Section extends Column
 {
 
-    protected $max;
+    private $_suffix_max;
 
-    protected $min;
-
-    protected $suffix_max;
-
-    protected $suffix_min;
+    private $_suffix_min;
 
     public function __construct( $option = [] )
     {
-        $this->max = $option['max'] ?? null;
-        $this->min = $option['min'] ?? null;
-
-        $this->suffix_max = $option['suffix_max'] ?? '_max';
-        $this->suffix_min = $option['suffix_min'] ?? '_min';
+        $this->setSuffixMax($option['suffix_max'] ?? '_max');
+        $this->setSuffixMin($option['suffix_min'] ?? '_min');
 
         parent::__construct($option);
     }
@@ -36,43 +27,86 @@ class Section extends SearchColumn
     public function condition()
     {
         $section = [];
-        if ( $this->max ) {
-            $section[] = $this->getDbColumn() . ' < :' . $this->getDbColumn() . '_end:';
+        if ( $this->getMax() ) {
+            $section[] = sprintf("%s < :%s:", $this->getDbField(), $this->getMaxField());
         }
-        if ( $this->min ) {
-            $section[] = $this->getDbColumn() . ' > :' . $this->getDbColumn() . '_start:';
+        if ( $this->getMin() ) {
+            $section[] = sprintf("%s > :%s:", $this->getDbField(), $this->getMinField());
         }
 
         return implode(' and ', $section);
     }
 
-    public function getBindValue()
+    public function values(): array
     {
         return [
-            $this->getDbColumn() . '_end'   => $this->max,
-            $this->getDbColumn() . '_start' => $this->min,
+            $this->getMaxField() => $this->getMax(),
+            $this->getMinField() => $this->getMin(),
         ];
     }
 
-    public function getValue()
+
+    public function getMaxField()
     {
-
-
-        return true;
+        return $this->getField() . $this->getSuffixMax();
     }
 
-    public function data( $field, Config $params )
+    public function getMinField()
     {
-        $r = parent::data($field, $params);
-        if ( false === $r ) {
-            return false;
-        }
+        return $this->getField() . $this->getSuffixMin();
+    }
 
-        $this->max = $params->path($field . $this->suffix_max);
-        $this->min = $params->path($field . $this->suffix_min);
 
-        if ( null === $this->max && null === $this->min ) {
-            return false;
-        }
+    /**
+     * @return mixed|null
+     */
+    public function getMax()
+    {
+        return $this->getParam(
+                $this->getMaxField()
+            ) ?? null;
+    }
+
+
+    /**
+     * @return mixed|null
+     */
+    public function getMin()
+    {
+        return $this->getParam(
+                $this->getMinField()
+            ) ?? null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuffixMax()
+    {
+        return $this->_suffix_max;
+    }
+
+    /**
+     * @param mixed $suffix_max
+     */
+    public function setSuffixMax( $suffix_max )
+    {
+        $this->_suffix_max = $suffix_max;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuffixMin()
+    {
+        return $this->_suffix_min;
+    }
+
+    /**
+     * @param mixed $suffix_min
+     */
+    public function setSuffixMin( $suffix_min )
+    {
+        $this->_suffix_min = $suffix_min;
     }
 }
