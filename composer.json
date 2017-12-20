@@ -27,8 +27,7 @@
     }
   },
   "require": {
-    "php": "^7.1",
-    "phalcon": "^3.2"
+    "php": "^7.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.2"
