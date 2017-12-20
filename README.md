@@ -180,4 +180,9 @@ var_dump($bind);//['g1'=>1]
 ```
 
 
+full feature example can be found in example dir.
+
+
+
+
 
