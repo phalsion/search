@@ -11,7 +11,6 @@ namespace Phalsion\Search\Columns;
 class KeyWord extends Column
 {
 
-    //like%位置
     const LEFT  = 1;
     const RIGHT = 2;
     const BOTH  = 3;
@@ -20,7 +19,6 @@ class KeyWord extends Column
 
     public function __construct( array $option = [] )
     {
-        //默认两边都有%
         $this->like = $option['like'] ?? static::BOTH;
 
         parent::__construct($option);
@@ -29,21 +27,58 @@ class KeyWord extends Column
 
     public function condition()
     {
-        $likeValue = '';
-
-        switch ( $this->like ) {
-            case static::LEFT:
-                $likeValue = '%:' . $this->getDbField() . ':';
-                break;
-            case static::RIGHT:
-                $likeValue = ':' . $this->getDbField() . ':%';
-                break;
-            case static::BOTH:
-                $likeValue = '%:' . $this->getDbField() . ':%';
-                break;
+        $conditions = '';
+        $mode       = '%s';
+        foreach ( $this->mapDbField() as $k => $field ) {
+            if ( $k > 0 ) {
+                $conditions .= ' or ';
+                $mode       = '(%s)';
+            }
+            $conditions .= sprintf('%s like :%s:', $field, $field);
         }
 
-        return $this->getDbField() . ' like ' . $likeValue;
+        return sprintf($mode, $conditions);
+    }
+
+
+    public function values(): array
+    {
+        $values = [];
+        $v      = $this->getParam($this->getField());
+
+        if ( $v === null ) {
+            return [];
+        }
+
+        switch ( $this->like ) {
+            case self::LEFT:
+                $v = sprintf('%%%s', $v);
+                break;
+            case self::RIGHT:
+                $v = sprintf('%s%%', $v);
+                break;
+            case self::BOTH:
+                $v = sprintf('%%%s%%', $v);
+                break;
+            default:
+        }
+        foreach ( $this->mapDbField() as $field ) {
+            $values[ $field ] = $v;
+        }
+
+        return $values;
+    }
+
+
+    public function mapDbField()
+    {
+        if ( is_array($this->getDbField()) ) {
+            foreach ( $this->getDbField() as $field ) {
+                yield $field;
+            }
+        } else {
+            yield $this->getDbField();
+        }
     }
 
 

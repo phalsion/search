@@ -10,26 +10,20 @@ namespace Phalsion\Search\Columns;
  */
 abstract class Column implements ColumnInterface
 {
+    const AND = 0;
+    const OR  = 1;
 
-    /**
-     * @var mixed 参数的值
-     */
     private $_param;
-
     private $_field_name;
-
-    /**
-     * @var bool $_allow_empty
-     */
     private $_allow_empty;
+    private $_callback;
+    private $_flag;
 
     /**
-     * 数据处理的回调函数
+     * 数据库中对应的字段
      *
-     * @var \Closure|null $_callback
+     * @var string|null $_db_field
      */
-    private $_callback;
-
     private $_db_field;
 
     public function __construct( array $option = [] )
@@ -39,7 +33,13 @@ abstract class Column implements ColumnInterface
         $this->_allow_empty = (bool) ( $option['empty'] ?? true );
     }
 
+    /**
+     * 该方法返回的字符串用于phalcon的数据库查询
+     *
+     * @return string
+     */
     abstract public function condition();
+
 
     public function values(): array
     {
@@ -51,7 +51,7 @@ abstract class Column implements ColumnInterface
     /**
      * @inheritdoc
      */
-    public function getBind(): array
+    public function getBind()
     {
         $bind = $this->values();
         foreach ( $bind as $k => $item ) {
@@ -61,6 +61,11 @@ abstract class Column implements ColumnInterface
         }
 
         return $bind;
+    }
+
+    public function handle()
+    {
+        return [ $this->getCondition(), $this->getBind() ];
     }
 
     public function setDbField( $db_field )
@@ -117,13 +122,21 @@ abstract class Column implements ColumnInterface
         return $this->_field_name;
     }
 
-    /**
-     * 是否允许为空，默认可以为空
-     *
-     * @return mixed
-     */
-    public function allowEmpty(): bool
+    public function allowEmpty()
     {
         return $this->_allow_empty;
+    }
+
+    public function getFlag()
+    {
+        return $this->_flag;
+    }
+
+    /**
+     * @param mixed $flag
+     */
+    public function setFlag( $flag )
+    {
+        $this->_flag = $flag;
     }
 }

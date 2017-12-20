@@ -8,7 +8,7 @@ namespace Phalsion\Search;
  * @author  saberuster
  * @package \Phalsion\Search
  */
-class SearchException extends \Exception
+class SearchException extends \RuntimeException
 {
 
 }

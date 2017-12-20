@@ -17,5 +17,16 @@ class MultiSelect extends Column
         return $this->getDbField() . ' IN ({' . $this->getDbField() . ':array})';
     }
 
+    public function values(): array
+    {
+        $field = $this->getDbField();
+        $v     = $this->getParam($this->getField());
+        if ( is_array($v) && !empty($v) ) {
+            return [ $field => $v ];
+        } else {
+            return [];
+        }
+    }
+
 
 }
