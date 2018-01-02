@@ -26,6 +26,6 @@ class LessThan extends Column
             $op = '<=';
         }
 
-        return sprintf('%s %s :%s:', $this->getDbField(), $op, $this->getDbField());
+        return sprintf('%s %s :%s:', $this->getDbField(), $op, $this->getField());
     }
 }

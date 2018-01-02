@@ -44,7 +44,7 @@ abstract class Column implements ColumnInterface
     public function values(): array
     {
         return [
-            $this->getDbField() => $this->getParam($this->getField())
+            $this->getField() => $this->getParam($this->getField())
         ];
     }
 

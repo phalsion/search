@@ -29,11 +29,14 @@ class LessThanSearchTest extends TestCase
     public function lessThanDataProvider()
     {
         return [
-            'default' => [
+            'default'      => [
                 [ 'less1' => 'less' ], 'less1 < :less1:', [ 'less1' => 'less' ]
             ],
-            'equal'   => [
+            'equal'        => [
                 [ 'less2' => 'less' ], 'less2 <= :less2:', [ 'less2' => 'less' ]
+            ],
+            'rename-field' => [
+                [ 'less3' => 'less' ], 'less33 <= :less3:', [ 'less3' => 'less' ]
             ]
         ];
     }

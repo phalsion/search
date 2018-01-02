@@ -10,7 +10,6 @@ namespace Tests;
 
 
 use Example\RadioSearch;
-use Phalsion\Search\Columns\Radio;
 use PHPUnit\Framework\TestCase;
 
 class RadioTest extends TestCase
@@ -30,14 +29,17 @@ class RadioTest extends TestCase
     public function radioDataProvider()
     {
         return [
-            'default' => [
+            'default'      => [
                 [ 'r1' => 'asd' ], 'r1 = :r1:', [ 'r1' => 'asd' ]
             ],
-            'null'    => [
+            'null'         => [
                 [ 'r1' => null ], '', []
             ],
-            'empty'   => [
+            'empty'        => [
                 [ 'r1' => '' ], 'r1 = :r1:', [ 'r1' => '' ]
+            ],
+            'rename-field' => [
+                [ 'r2' => '' ], 'r22 = :r2:', [ 'r2' => '' ]
             ]
         ];
     }

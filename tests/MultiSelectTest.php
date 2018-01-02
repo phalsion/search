@@ -44,6 +44,9 @@ class MultiSelectTest extends TestCase
             ],
             'contains null' => [
                 [ 'm1' => [ 1, null, 3 ] ], 'm1 IN ({m1:array})', [ 'm1' => [ 1, null, 3 ] ],
+            ],
+            'rename-field'  => [
+                [ 'm2' => [ 1, 3 ] ], 'm22 IN ({m2:array})', [ 'm2' => [ 1, 3 ] ],
             ]
         ];
     }

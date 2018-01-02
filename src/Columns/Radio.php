@@ -13,6 +13,6 @@ class Radio extends Column
 
     public function condition()
     {
-        return $this->getField() . ' = :' . $this->getField() . ':';
+        return $this->getDbField() . ' = :' . $this->getField() . ':';
     }
 }

@@ -18,5 +18,6 @@ class RadioSearch extends Search
     public function initialize()
     {
         $this->addColumn('r1', new Radio());
+        $this->addColumn('r2', new Radio([ 'field' => 'r22' ]));
     }
 }

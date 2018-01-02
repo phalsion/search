@@ -19,5 +19,6 @@ class GreaterThanSearch extends Search
     {
         $this->addColumn('g1', new GreatThan());
         $this->addColumn('g2', new GreatThan([ 'equal' => true ]));
+        $this->addColumn('g3', new GreatThan([ 'equal' => true, 'field' => 'g33' ]));
     }
 }

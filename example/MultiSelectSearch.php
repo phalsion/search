@@ -18,5 +18,6 @@ class MultiSelectSearch extends Search
     public function initialize()
     {
         $this->addColumn('m1', new MultiSelect());
+        $this->addColumn('m2', new MultiSelect([ 'field' => 'm22' ]));
     }
 }

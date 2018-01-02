@@ -10,7 +10,6 @@ namespace Tests;
 
 
 use Example\GreaterThanSearch;
-use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\TestCase;
 
 class GreatThanSearchTest extends TestCase
@@ -30,11 +29,14 @@ class GreatThanSearchTest extends TestCase
     public function greatThanDataProvider()
     {
         return [
-            'default' => [
+            'default'      => [
                 [ 'g1' => 'gg' ], 'g1 > :g1:', [ 'g1' => 'gg' ]
             ],
-            'equal'   => [
+            'equal'        => [
                 [ 'g2' => 'gg' ], 'g2 >= :g2:', [ 'g2' => 'gg' ]
+            ],
+            'rename-field' => [
+                [ 'g3' => 'gg' ], 'g33 >= :g3:', [ 'g3' => 'gg' ]
             ]
         ];
     }
