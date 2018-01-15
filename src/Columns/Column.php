@@ -95,7 +95,7 @@ abstract class Column implements ColumnInterface
     {
         if (
             ( $param[ $this->getField() ] ?? false )
-            && $this->_callback instanceof \Closure ) {
+            && $this->_callback ) {
             $param = call_user_func($this->_callback, $param);
         }
         $this->_param = $param;
